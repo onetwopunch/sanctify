@@ -1,0 +1,16 @@
+#!/bin/sh
+# Run a Ruby REPL.
+
+set -x
+
+cd $(dirname "$0")/..
+PRY_PATH=$(which pry)
+
+if [ -x $PRY_PATH ]
+then
+  exec bundle exec ruby $PRY_PATH -Ilib -r sanctify -r sanctify/console
+else
+  red='\e[0;31m'
+  endColor='\e[0m'
+  echo -e "${red}Pry was not found or not executable. Make sure `which pry` returns an exacutable.${endColor}"
+fi
