@@ -33,7 +33,15 @@ Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH]
     -h, --help                       Prints this help
 ```
 
+To integrate with pre-commit, add the following to your `pre-commit-config.yaml`:
 
+```
+repos:
+-   repo: https://github.com/onetwopunch/sanctify
+    sha: v0.1.1
+    hooks:
+    -   id: sanctify
+```
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
