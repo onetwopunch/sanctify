@@ -1,0 +1,8 @@
+---
+custom_matchers:
+  - description: "Test Description"
+    regex: "secret*"
+
+ignored_paths:
+  - test.*
+  - thing.rb

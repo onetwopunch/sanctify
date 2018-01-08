@@ -1,14 +1,12 @@
 #!/bin/sh
 # Run a Ruby REPL.
 
-set -x
-
 cd $(dirname "$0")/..
 PRY_PATH=$(which pry)
 
 if [ -x $PRY_PATH ]
 then
-  exec bundle exec ruby $PRY_PATH -Ilib -r sanctify -r sanctify/console
+  exec bundle exec $PRY_PATH -Ilib -r sanctify -r sanctify/console
 else
   red='\e[0;31m'
   endColor='\e[0m'

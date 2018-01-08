@@ -9,7 +9,7 @@ TODO: Delete this and the text above, and describe your gem
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sanctify'
+gem install 'sanctify'
 ```
 
 And then execute:
@@ -22,6 +22,16 @@ Or install it yourself as:
 
 ## Usage
 
+Run sanctify as part of the pre-commit hook, which will make sure to find and deny secrets before commit and PR. You can use the [precommit hook project](http://pre-commit.com/) to easily integrate this script with your repo.
+
+Sancitfy has very simple usage:
+
+```
+Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH]
+    -r, --repo REPO                  Repo to test
+    -c, --config CONFIG              Configuration file in YAML
+    -h, --help                       Prints this help
+```
 
 
 ## Development

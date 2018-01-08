@@ -9,10 +9,17 @@ RSpec.describe Sanctify::Scanner, git: true do
     end
   end
   context 'without config' do
-    subject { Sanctify::Scanner.new(@path).run }
+    subject { Sanctify::Scanner.new({repo: @path}).run }
 
     context 'with AWS Access Key' do
       let(:payload) { "AKIASECRET123456789Z" }
+      it 'raises an error' do
+        expect{ subject }.to raise_error(Sanctify::ScannerError)
+      end
+    end
+
+    context 'with AWS Secret Key', focus: true do
+      let(:payload) { "pIW/g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
       it 'raises an error' do
         expect{ subject }.to raise_error(Sanctify::ScannerError)
       end
@@ -35,7 +42,7 @@ RSpec.describe Sanctify::Scanner, git: true do
         'custom_matchers' => custom_matchers
       }
     end
-    subject { Sanctify::Scanner.new(@path, config).run }
+    subject { Sanctify::Scanner.new({repo: @path, config: config}).run }
 
     context 'with ignored paths' do
       let(:ignored_paths) { ['te.*'] }

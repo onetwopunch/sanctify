@@ -5,9 +5,9 @@ module Sanctify
   class ScannerError < StandardError; end
   class Scanner
     attr_reader :config, :repo, :matcher_list
-    def initialize(path, config = {})
-      @config = config
-      @repo = Repo.new(path, ignored_paths)
+    def initialize(args)
+      @config = args[:config] || {}
+      @repo = Repo.new(args[:repo], ignored_paths)
       @matcher_list = MatcherList.new
     end
 
