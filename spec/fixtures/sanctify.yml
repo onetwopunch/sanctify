@@ -1,7 +1,7 @@
 ---
 custom_matchers:
   - description: "Test Description"
-    regex: "secret*"
+    regex: "secret.*"
 
 ignored_paths:
   - test.*

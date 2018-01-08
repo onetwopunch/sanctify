@@ -38,10 +38,51 @@ To integrate with pre-commit, add the following to your `pre-commit-config.yaml`
 ```
 repos:
 -   repo: https://github.com/onetwopunch/sanctify
-    sha: v0.1.1
+    sha: v0.1.2
     hooks:
     -   id: sanctify
 ```
+
+## Configuration
+
+Sanctify supports two top-level objects in the config: `ignored_paths` and `custom_matchers`. Currently sanctify supports a number of default matchers, but you are free to add more to your config file under custom_matchers. If there is a file that you know has secrets or is a false positive, you can add a list of Ruby-style regexes to ignore certain files.
+
+Here's an example config file:
+
+```yaml
+---
+custom_matchers:
+  - description: "Test Description"
+    regex: "secret.*"
+
+ignored_paths:
+  - test.*
+  - .*thing.rb
+
+```
+
+The list of current default matchers are located in  `lib/sanctify/matcher_list.rb`:
+
+```ruby
+[
+  {
+    description: "AWS Access Key ID",
+    regex: /AKIA[0-9A-Z]{16}/
+  },
+  {
+    description: "AWS Secret Key",
+    regex: /\b[\w\/&?=-@#$%\\^+]{40}\b/
+  },
+  {
+    description: "SSH RSA Private Key",
+    regex: /^-----BEGIN RSA PRIVATE KEY-----$/
+  },
+  ...
+]
+```
+
+If you see any problem with a default matcher list or would like to add another to the default list, please feel free to make a pull request.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

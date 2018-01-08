@@ -32,6 +32,14 @@ module Sanctify
         regex: /\b[\w\/&?=-@#$%\\^+]{40}\b/
       },
       {
+        description: "SSH RSA Private Key",
+        regex: /^-----BEGIN RSA PRIVATE KEY-----$/
+      },
+      {
+        description: "X.509 Certificate",
+        regex: /^-----BEGIN CERTIFICATE-----$/
+      },
+      {
         description: "Redis URL with Password",
         regex: /redis:\/\/[0-9a-zA-Z:@.\\-]+/
       },
