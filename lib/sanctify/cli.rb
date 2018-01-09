@@ -7,7 +7,7 @@ module Sanctify
       args = {}
 
       opt_parser = OptionParser.new do |opts|
-        opts.banner = "Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH]"
+        opts.banner = "Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH] [--diff FROM_COMMIT..TO_COMMIT | --diff FROM_COMMIT]"
 
         opts.on("-r REPO", "--repo REPO", "Repo to test") do |repo|
           args[:repo] = repo
@@ -15,6 +15,12 @@ module Sanctify
 
         opts.on("-c CONFIG", "--config CONFIG", "Configuration file in YAML") do |config|
           args[:config] = YAML.load(File.open(config))
+        end
+
+        opts.on("-d DIFF", "--diff DIFF", "Specify a diff or commit from which to check secrets") do |diff|
+          from, to = diff.split('..')
+          args[:from] = from
+          args[:to] = to
         end
 
         opts.on("-h", "--help", "Prints this help") do

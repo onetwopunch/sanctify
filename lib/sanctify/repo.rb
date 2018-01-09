@@ -3,20 +3,19 @@ require 'git'
 module Sanctify
   class Repo
     attr_reader :path, :git, :ignored_paths
-    def initialize(path, ignored_paths = [])
-      @path = path
+    def initialize(args, ignored_paths = [])
+      @path = args[:repo]
+      @to = args[:to] # The default for `to` in git.diff is nil
+      @from = args[:from] || 'HEAD'
       @git = Git.open(path)
       @ignored_paths = ignored_paths
     end
 
-    def diff(from = 'HEAD', to = nil)
+    def diff
       # The diff processing is only done in the each method
       # so we'll call this method as a singleton so we don't accidentally
       # do this more than once per instance of the repo.
-      #
-      # NOTE: We expect this bydefault to be executed in a pre-commit hook
-      # but we may want to extend it to work with a static git repo as well.
-      @diff ||= git.diff(from, to).each.to_a
+      @diff ||= git.diff(@from, @to).each.to_a
     end
 
     def added_lines

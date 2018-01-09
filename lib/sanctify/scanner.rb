@@ -7,7 +7,7 @@ module Sanctify
     attr_reader :config, :repo, :matcher_list
     def initialize(args)
       @config = args[:config] || {}
-      @repo = Repo.new(args[:repo], ignored_paths)
+      @repo = Repo.new(args, ignored_paths)
       @matcher_list = MatcherList.new
     end
 
@@ -20,6 +20,7 @@ module Sanctify
           end
         end
       end
+      puts "SUCCESS! No Secrets Found in #{repo.path}"
     end
 
     private

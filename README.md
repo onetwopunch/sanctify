@@ -20,14 +20,15 @@ Or install it yourself as:
 
 ## Usage
 
-Run sanctify as part of the pre-commit hook, which will make sure to find and deny secrets before commit and PR. You can use the [precommit hook project](http://pre-commit.com/) to easily integrate this script with your repo.
+Run sanctify as part of the pre-commit hook, which will make sure to find and deny secrets before commit and PR. You can use the [precommit hook project](http://pre-commit.com/) to easily integrate this script with your repo. You can also run as a standalone command. If it fails, you'll get an exit code of 1 otherwise, 0 so you can very easily integrate it into bash scripts.
 
 Sancitfy has very simple usage:
 
 ```
-Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH]
+Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH] [-d FROM_COMMIT..TO_COMMIT | -d FROM_COMMIT]
     -r, --repo REPO                  Repo to test
     -c, --config CONFIG              Configuration file in YAML
+    -d, --diff DIFF                  Specify a diff or commit from which to check secrets
     -h, --help                       Prints this help
 ```
 
@@ -36,7 +37,7 @@ To integrate with pre-commit, add the following to your `pre-commit-config.yaml`
 ```
 repos:
 -   repo: https://github.com/onetwopunch/sanctify
-    sha: v0.1.2
+    sha: v0.2.0
     hooks:
     -   id: sanctify
 ```
