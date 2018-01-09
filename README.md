@@ -69,10 +69,6 @@ The list of current default matchers are located in  `lib/sanctify/matcher_list.
     regex: /AKIA[0-9A-Z]{16}/
   },
   {
-    description: "AWS Secret Key",
-    regex: /\b[\w\/&?=-@#$%\\^+]{40}\b/
-  },
-  {
     description: "SSH RSA Private Key",
     regex: /^-----BEGIN RSA PRIVATE KEY-----$/
   },

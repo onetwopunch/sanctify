@@ -25,6 +25,13 @@ RSpec.describe Sanctify::Scanner, git: true do
       end
     end
 
+    context 'with git sha', focus: true do
+      let(:payload) { "a74e98e6c224a9d2dba20c858009a4cb51689822" }
+      it 'raises an error' do
+        expect{ subject }.not_to raise_error
+      end
+    end
+
     context 'with AWS Secret Key', focus: true do
       let(:payload) { "pIW/g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
       it 'raises an error' do
