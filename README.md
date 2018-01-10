@@ -37,9 +37,11 @@ To integrate with pre-commit, add the following to your `pre-commit-config.yaml`
 ```
 repos:
 -   repo: https://github.com/onetwopunch/sanctify
-    sha: v0.2.0
+    sha: v0.2.2
     hooks:
     -   id: sanctify
+        args:
+        - -c sanctify.yml
 ```
 
 ## Configuration

@@ -14,7 +14,7 @@ module Sanctify
         end
 
         opts.on("-c CONFIG", "--config CONFIG", "Configuration file in YAML") do |config|
-          args[:config] = YAML.load(File.open(config))
+          args[:config] = YAML.load(File.open(config.chomp))
         end
 
         opts.on("-d DIFF", "--diff DIFF", "Specify a diff or commit from which to check secrets") do |diff|
