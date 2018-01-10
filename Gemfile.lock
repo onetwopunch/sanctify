@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sanctify (0.2.0)
+    sanctify (0.2.3)
       git
 
 GEM

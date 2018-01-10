@@ -29,7 +29,7 @@ module Sanctify
       },
       {
         description: "AWS Secret Key",
-        regex: /\b(?=.*[\w])(?=.*[\/&?=-@#$%\\^+])[\w\/&?=-@#$%\\^+]{40}\b/
+        regex: /\b(?<![A-Za-z0-9\/+=])(?=.*[\/&?=-@#$%\\^+])[A-Za-z0-9\/+=]{40}(?![A-Za-z0-9\/+=])\b/
       },
       {
         description: "SSH RSA Private Key",
