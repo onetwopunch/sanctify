@@ -41,7 +41,8 @@ repos:
     hooks:
     -   id: sanctify
         args:
-        - -c sanctify.yml
+        - -c
+        - sanctify.yml
 ```
 
 ## Configuration
