@@ -22,7 +22,10 @@ module Sanctify
           args[:from] = from
           args[:to] = to
         end
-
+        opts.on("-v", "--version", "Prints the version and exits") do
+          puts "sanctify #{VERSION}"
+          exit
+        end
         opts.on("-h", "--help", "Prints this help") do
           puts opts
           exit
@@ -31,10 +34,11 @@ module Sanctify
 
       opt_parser.parse!(argv)
       if args[:repo].nil?
-        if Dir['.git'].empty?
+        repo = `git rev-parse --show-toplevel`.chomp
+        if repo.empty?
           raise Sanctify::CliError, "Repo not specified and current directory not a git repository."
         else
-          args[:repo] = Dir.pwd
+          args[:repo] = repo
         end
       end
       Scanner.new(args).run

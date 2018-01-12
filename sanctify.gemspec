@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Ryan Canty"]
   spec.email         = ["jrcanty@gmail.com"]
 
-  spec.summary       = %q{Let's you know about all the potential keys you're about to push in a Git commit}
-  spec.description   = %q{Let's you know about all the potential keys you're about to push in a Git commit}
+  spec.summary       = %q{Keep secrets out of your Git repo with Sanctify}
+  spec.description   = %q{Sanctify let's you know about all the potential keys you're about to push in a Git commit}
   spec.homepage      = "https://github.com/onetwopunch/sanctify"
   spec.license       = "MIT"
 
@@ -34,5 +34,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.0"
   spec.add_development_dependency "pry"
-  spec.add_runtime_dependency "git"
+  spec.add_runtime_dependency "git", "~> 1.3"
 end
