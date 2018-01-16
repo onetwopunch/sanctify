@@ -29,6 +29,7 @@ Usage: sanctify [-r REPO_PATH] [-c CONFIG_PATH] [-d FROM_COMMIT..TO_COMMIT | -d 
     -r, --repo REPO                  Repo to test
     -c, --config CONFIG              Configuration file in YAML
     -d, --diff DIFF                  Specify a diff or commit from which to check secrets
+    -v, --version                    Prints the version and exits
     -h, --help                       Prints this help
 ```
 
@@ -37,7 +38,7 @@ To integrate with pre-commit, add the following to your `pre-commit-config.yaml`
 ```
 repos:
 -   repo: https://github.com/onetwopunch/sanctify
-    sha: v0.2.2
+    sha: v0.2.5
     hooks:
     -   id: sanctify
         args:
@@ -81,11 +82,50 @@ The list of current default matchers are located in  `lib/sanctify/matcher_list.
 
 If you see any problem with a default matcher list or would like to add another to the default list, please feel free to make a pull request.
 
+## Troubleshooting
+
+- If you are facing an issue with integration with a Rail project, where you are using rbenv, and get the following error:
+```
+An unexpected error has occurred: CalledProcessError: Command: (u'/bin/bash', u'/Users/ryan/.rbenv/shims/gem', 'build', 'sanctify.gemspec')
+Return code: 1
+Expected return code: 0
+Output: (none)
+Errors:
+    WARNING:  See http://guides.rubygems.org/specification-reference/ for help
+    ERROR:  While executing gem ... (Gem::InvalidSpecificationException)
+        ["travis.yml", "literally every file in your Rails repo", ...]
+```
+
+This is an issue with pre-commit since they build their own version of rbenv that conflicts under certain circumstances I have yet to fully grok. The best way to get around this is to install sanctify external to the pre-commit repo.
+
+In your pre-commit-config.yaml:
+
+```yaml
+-   repo: local
+    hooks:
+    -   id: secret-check-hook
+        name: "Sanctify Secret Scanner"
+        entry: ./bin/secret-check
+        language: script
+        files: .
+```
+
+And then in the `./bin/secret-check` file just install and run sanctify:
+
+```bash
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+if [[ ! $(which sanctify) ]]; then
+  gem install sanctify
+fi
+
+sanctify -c $DIR/sanctify.yml
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
 
@@ -97,4 +137,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Sanctify project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/sanctify/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Sanctify project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/onetwopunch/sanctify/blob/master/CODE_OF_CONDUCT.md).

@@ -3,3 +3,4 @@
     description: This hook scans for common secrets before commit
     entry: sanctify
     language: ruby
+    files: .
