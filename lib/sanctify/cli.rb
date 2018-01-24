@@ -42,6 +42,7 @@ module Sanctify
         end
       end
       Scanner.new(args).run
+      puts "SUCCESS! No Secrets Found in #{args[:repo]}"
     end
   end
 end

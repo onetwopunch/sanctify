@@ -25,6 +25,27 @@ RSpec.describe Sanctify::Scanner, git: true do
       end
     end
 
+    context 'with AWS Secret Key that does not have a "/" character' do
+      let(:payload) { "pIW+g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
+      it 'raises an error' do
+        expect{ subject }.to raise_error(Sanctify::ScannerError)
+      end
+    end
+
+    context 'with an innocent 40-character path using a base64 alphabet' do
+      let(:payload) { "yourlibrary/some/40/character/path/Thing" }
+      it 'does not raise an error' do
+        expect{ subject }.not_to raise_error
+      end
+    end
+
+    context 'with a 40-character string using a base64 alphabet' do
+      let(:payload) { "OKIKnowSomeClassNamesAreJustReallyLongOK" }
+      it 'does not raise an error' do
+        expect{ subject }.not_to raise_error
+      end
+    end
+
     context 'with git sha' do
       let(:payload) { "a74e98e6c224a9d2dba20c858009a4cb51689822" }
       it 'does not raise an error' do

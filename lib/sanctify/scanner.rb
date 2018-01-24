@@ -20,7 +20,6 @@ module Sanctify
           end
         end
       end
-      puts "SUCCESS! No Secrets Found in #{repo.path}"
     end
 
     private
