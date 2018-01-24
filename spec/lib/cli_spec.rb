@@ -10,13 +10,13 @@ RSpec.describe Sanctify::CLI, git: true do
   end
   context 'without config' do
     let(:argv) { ['-r', repo] }
-    it 'should not raise an error' do
-      expect{ subject }.not_to raise_error
+    it 'should raise an error' do
+      expect{ subject }.to raise_error(Sanctify::ScannerError)
     end
   end
   context 'with config' do
     let(:argv) { ['-r', repo, '-c', "spec/fixtures/sanctify.yml"] }
-    it 'should not raise an error' do
+    it 'should raise an error' do
       expect{ subject }.not_to raise_error
     end
   end

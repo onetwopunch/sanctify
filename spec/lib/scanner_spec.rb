@@ -18,6 +18,13 @@ RSpec.describe Sanctify::Scanner, git: true do
       end
     end
 
+    context 'with AWS Secret Key' do
+      let(:payload) { "pIW/g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
+      it 'raises an error' do
+        expect{ subject }.to raise_error(Sanctify::ScannerError)
+      end
+    end
+
     context 'with git sha' do
       let(:payload) { "a74e98e6c224a9d2dba20c858009a4cb51689822" }
       it 'does not raise an error' do
@@ -29,6 +36,13 @@ RSpec.describe Sanctify::Scanner, git: true do
       let(:payload) { "yyyyyy/tttt/ggggggggg/aaa_aaaa_aaaaaaaa/_bbbb_/cccc_dd_eeeee_vvvvvvv/bbbbb_iiiiiiii.yml" }
       it 'does not raise an error' do
         expect{ subject }.not_to raise_error
+      end
+    end
+
+    context 'with AWS Secret Key' do
+      let(:payload) { "pIW/g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
+      it 'raises an error' do
+        expect{ subject }.to raise_error(Sanctify::ScannerError)
       end
     end
   end
