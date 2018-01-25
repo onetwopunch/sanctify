@@ -1,12 +1,17 @@
+require 'sanctify/matcher'
+
 module Sanctify
   class ParserError < StandardError; end
   class MatcherList
-    def initialize
-      @matchers = DEFAULT_MATCHERS
+    attr_reader :config
+    def initialize(config)
+      @matchers = DEFAULT_MATCHERS.map{ |obj| Matcher.new(obj[:description], obj[:regex], config) }
+      @config = config
+      initialize_custom_matchers!
     end
 
-    def add(desc:, regex:)
-      if desc.length.zero?
+    def add(description, regex)
+      if description.length.zero?
         raise ParserError, "Description must exist and be greater length than zero"
       end
 
@@ -14,12 +19,25 @@ module Sanctify
         raise ParserError, "Regex must be of type Regexp"
       end
 
-      @matchers << { description: desc, regex: regex }
+      @matchers << Matcher.new(description, regex, config)
       @matchers
     end
 
     def each(&blk)
       @matchers.each &blk
+    end
+
+    def initialize_custom_matchers!
+      custom_matchers = config['custom_matchers'] || []
+      if custom_matchers.any?
+        custom_matchers.each do |cust|
+          if cust['description'] && cust['regex']
+            add(cust['description'], Regexp.new(cust['regex']))
+          else
+            raise ParserError, "Improperly configured custom matcher: #{cust}. Must include 'description' and 'regex'"
+          end
+        end
+      end
     end
 
     DEFAULT_MATCHERS = [
@@ -29,6 +47,10 @@ module Sanctify
       },
       {
         description: "AWS Secret Key",
+        # NOTE: This regex does not match keys that include a /, which is allowed
+        # in base64. If we added the slash, there would be many false positives
+        # for paths that are exactly 40 characters. PRs welcome if you can figure
+        # out a regex that will match base64 but not paths.
         regex: /\b(?<![A-Za-z0-9\/+=])(?=.*[&?=-@#$%\\^+])[A-Za-z0-9\/+=]{40}(?![A-Za-z0-9\/+=])\b/
       },
       {
@@ -36,7 +58,7 @@ module Sanctify
         regex: /^-----BEGIN RSA PRIVATE KEY-----$/
       },
       {
-        description: "X.509 Certificate",
+        description: "X509 Certificate",
         regex: /^-----BEGIN CERTIFICATE-----$/
       },
       {

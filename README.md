@@ -80,7 +80,26 @@ The list of current default matchers are located in  `lib/sanctify/matcher_list.
 ]
 ```
 
+If you'd like to disable certain matchers from the default list, you can do so my adding the id of the matcher you'd like to disable to a list in the config called `disabled_matchers`. The id of a matcher is simply the downcased description with spaces replaced with underscores. For example, if you wanted to disable all default matchers and only use your custom matchers, you can add the following to the config:
+
+```yaml
+disabled_matchers:
+  - aws_access_key_id
+  - aws_secret_key
+  - ssh_rsa_private_key
+  - x509_certificate
+  - redis_url_with_password
+  - url_basic_auth
+  - google_access_token
+  - google_api
+  - slack_api
+  - slack_bot
+  - gem_fury_v1
+  - gem_fury_v2
+```
+
 If you see any problem with a default matcher list or would like to add another to the default list, please feel free to make a pull request.
+
 
 ## Troubleshooting
 

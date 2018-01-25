@@ -2,13 +2,13 @@ require 'git'
 
 module Sanctify
   class Repo
-    attr_reader :path, :git, :ignored_paths
-    def initialize(args, ignored_paths = [])
+    attr_reader :path, :git, :config
+    def initialize(args, config = {})
       @path = args[:repo]
       @to = args[:to] # The default for `to` in git.diff is nil
       @from = args[:from] || 'HEAD'
       @git = Git.open(path)
-      @ignored_paths = ignored_paths
+      @config = config
     end
 
     def diff
@@ -45,6 +45,11 @@ module Sanctify
 
     def added_line?(line)
       line.start_with?('+') && !line.start_with?('+++')
+    end
+
+    def ignored_paths
+      patterns = config['ignored_paths'] || []
+      patterns.map { |patt| Regexp.new patt }
     end
   end
 end

@@ -6,3 +6,5 @@ custom_matchers:
 ignored_paths:
   - test.*
   - thing.rb
+disabled_matchers:
+  - aws_secret_key
