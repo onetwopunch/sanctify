@@ -2,13 +2,14 @@ require 'git'
 
 module Sanctify
   class Repo
-    attr_reader :path, :git, :ignored_paths
-    def initialize(args, ignored_paths = [])
+    attr_reader :path, :git
+    def initialize(args, ignored_paths: [])
       @path = args[:repo]
       @to = args[:to] # The default for `to` in git.diff is nil
       @from = args[:from] || 'HEAD'
       @git = Git.open(path)
-      @ignored_paths = ignored_paths
+      ignored_paths ||= []
+      @ignored_paths = ignored_paths.map { |pattern| Regexp.new(pattern) }
     end
 
     def diff
@@ -36,8 +37,8 @@ module Sanctify
     def should_ignore?(path)
       # Add pattern matching for filenames so users can ignore files that
       # they know contain secrets that they have accepted as false positive.
-      return false if ignored_paths.empty?
-      ignored_paths.each do |regex|
+      return false if @ignored_paths.empty?
+      @ignored_paths.each do |regex|
         return true if regex.match(path)
       end
       false

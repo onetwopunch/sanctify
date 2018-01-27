@@ -71,10 +71,12 @@ RSpec.describe Sanctify::Scanner, git: true do
   context 'with config' do
     let(:ignored_paths) { [] }
     let(:custom_matchers) { [] }
+    let(:disabled_matchers){ [] }
     let(:config) do
       {
         'ignored_paths' => ignored_paths,
-        'custom_matchers' => custom_matchers
+        'custom_matchers' => custom_matchers,
+        'disabled_matchers' => disabled_matchers
       }
     end
     subject { Sanctify::Scanner.new({repo: @path, config: config}).run }
@@ -97,6 +99,14 @@ RSpec.describe Sanctify::Scanner, git: true do
         it 'raises an error' do
           expect{ subject }.to raise_error(Sanctify::ScannerError)
         end
+      end
+    end
+
+    context 'with disabled_matchers' do
+      let(:disabled_matchers) { ['aws_secret_key'] }
+      let(:payload) { "pIW/g216XEHyoF+dIHkYgh439nGko8ga65VTusGF" }
+      it 'does not raise an error' do
+        expect { subject }.not_to raise_error
       end
     end
   end

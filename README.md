@@ -48,14 +48,15 @@ repos:
 
 ## Configuration
 
-Sanctify supports two top-level objects in the config: `ignored_paths` and `custom_matchers`. Currently sanctify supports a number of default matchers, but you are free to add more to your config file under custom_matchers. If there is a file that you know has secrets or is a false positive, you can add a list of Ruby-style regexes to ignore certain files.
+Sanctify supports 3 top-level objects in the config: `ignored_paths`,`custom_matchers`, and `disabled_matchers`. Currently sanctify supports a number of default matchers, but you are free to add more to your config file under custom_matchers. If there is a file that you know has secrets or is a false positive, you can add a list of Ruby-style regexes to ignore certain files. Currently the `id` field is optional and is used to select matchers from the default list you want to disable. However, we recommend adding an `id` so that in future features you will be able to explicitly reference your custom matcher as well.
 
 Here's an example config file:
 
 ```yaml
 ---
 custom_matchers:
-  - description: "Test Description"
+  - id: test_description
+    description: "Test Description"
     regex: "secret.*"
 
 ignored_paths:
@@ -80,7 +81,26 @@ The list of current default matchers are located in  `lib/sanctify/matcher_list.
 ]
 ```
 
+If you'd like to disable certain matchers from the default list, you can do so by adding the `id` of the matcher you'd like to disable to a list in the config called `disabled_matchers`. For example, if you wanted to disable all default matchers and only use your custom matchers, you can add the following to the config:
+
+```yaml
+disabled_matchers:
+  - aws_access_key_id
+  - aws_secret_key
+  - ssh_rsa_private_key
+  - x509_certificate
+  - redis_url_with_password
+  - url_basic_auth
+  - google_access_token
+  - google_api
+  - slack_api
+  - slack_bot
+  - gem_fury_v1
+  - gem_fury_v2
+```
+
 If you see any problem with a default matcher list or would like to add another to the default list, please feel free to make a pull request.
+
 
 ## Troubleshooting
 
